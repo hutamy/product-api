@@ -12,7 +12,7 @@
 - TypeORM
 
 ## Setup development environment
-- Copy `.env.exapmle` to `.env`
+- Copy `.env.example` to `.env`
 - Run `docker compose up -d` or run `make up` to setup environment
 - Install dependencies with `make dep` or `yarn` or `npm install`
 
