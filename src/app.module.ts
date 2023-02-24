@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configSchema } from './config.schema';
 import { UserModule } from './user/user.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -12,7 +13,6 @@ import { UserModule } from './user/user.module';
       envFilePath: ['.env'],
       validationSchema: configSchema,
     }),
-    ProductsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,6 +30,15 @@ import { UserModule } from './user/user.module';
         };
       },
     }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: Number(config.get('THROTTLE_TTL')),
+        limit: Number(config.get('THROTTLE_LIMIT')),
+      }),
+    }),
+    ProductsModule,
     AuthModule,
     UserModule,
   ],
